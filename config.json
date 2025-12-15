@@ -1,0 +1,51 @@
+{
+  "app": {
+    "name": "go-clean-arch-saas",
+    "env": "development"
+  },
+  "web": {
+    "prefork": false,
+    "port": 3000
+  },
+  "api": {
+    "prefix": "/api",
+    "version": "v1"
+  },
+  "log": {
+    "level": 6
+  },
+  "database": {
+    "username": "root",
+    "password": "",
+    "host": "localhost",
+    "port": 3306,
+    "name": "go_clean_arch_saas",
+    "pool": {
+      "idle": 10,
+      "max": 100,
+      "lifetime": 300
+    }
+  },
+  "jwt": {
+    "secret": "your-secret-key-change-in-production-min-32-chars",
+    "access_expire_minutes": 60,
+    "refresh_expire_days": 7
+  },
+  "cors": {
+    "allowed_origins": "http://localhost:3000,http://localhost:8080",
+    "allowed_methods": "GET,POST,PUT,PATCH,DELETE",
+    "allowed_headers": "Origin,Content-Type,Accept,Authorization"
+  },
+  "rate_limit": {
+    "enabled": false,
+    "rpm": 1000
+  },
+  "email": {
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "username": "your-email@gmail.com",
+    "password": "your-app-password",
+    "from": "noreply@yourdomain.com"
+  },
+  "base_url": "http://localhost:3000"
+}
