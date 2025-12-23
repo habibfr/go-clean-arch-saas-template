@@ -24,6 +24,15 @@ type BootstrapConfig struct {
 }
 
 func Bootstrap(config *BootstrapConfig) {
+	// Auto migrate schema
+	// if err := db.RunAutoMigration(config.DB); err != nil {
+	// 	config.Log.Fatalf("Auto migration failed: %v", err)
+	// }
+	// Seed demo data
+	// if err := db.SeedDatabase(config.DB); err != nil {
+	// 	config.Log.Fatalf("Seed failed: %v", err)
+	// }
+
 	// setup JWT service
 	jwtService := NewJWT(config.Config)
 

@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "go-clean-arch-saas",
+    "name": "midsuit-eam",
     "env": "development"
   },
   "web": {
@@ -15,11 +15,11 @@
     "level": 6
   },
   "database": {
-    "username": "root",
+    "username": "postgres",
     "password": "",
     "host": "localhost",
-    "port": 3306,
-    "name": "go_clean_arch_saas",
+    "port": 5432,
+    "name": "midsuit_eam",
     "pool": {
       "idle": 10,
       "max": 100,

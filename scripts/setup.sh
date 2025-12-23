@@ -13,10 +13,14 @@ fi
 source .env
 
 # Create database if not exists
-echo "📦 Creating database..."
-mysql -u${DB_USERNAME} -p${DB_PASSWORD} -h${DB_HOST} -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME};" 2>/dev/null || {
-    echo "⚠️  Could not create database. Please create manually: ${DB_NAME}"
-}
+if PGPASSWORD=${DB_PASSWORD} psql -U ${DB_USERNAME} -h ${DB_HOST} -p ${DB_PORT} -lqt | cut -d \| -f 1 | grep -qw ${DB_NAME}; then
+    echo "✅ Database ${DB_NAME} already exists"
+else
+    echo "📦 Creating database..."
+    PGPASSWORD=${DB_PASSWORD} createdb -U ${DB_USERNAME} -h ${DB_HOST} -p ${DB_PORT} ${DB_NAME} || {
+        echo "⚠️  Could not create database. Please create manually: ${DB_NAME}"
+    }
+fi
 
 # Run migrations
 echo "📦 Running migrations..."

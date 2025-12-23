@@ -14,18 +14,18 @@ setup: ## Initial setup (copy .env, install deps, create db, run migrations)
 
 migrate-up: ## Run database migrations
 	@echo "📦 Running migrations..."
-	@migrate -database "mysql://$(shell grep DB_USERNAME .env | cut -d '=' -f2):$(shell grep DB_PASSWORD .env | cut -d '=' -f2)@tcp($(shell grep DB_HOST .env | cut -d '=' -f2):$(shell grep DB_PORT .env | cut -d '=' -f2))/$(shell grep DB_NAME .env | cut -d '=' -f2)?charset=utf8mb4&parseTime=True&loc=Local" -path db/migrations up
+	@migrate -database "postgres://$(shell grep DB_USERNAME .env | cut -d '=' -f2):$(shell grep DB_PASSWORD .env | cut -d '=' -f2)@$(shell grep DB_HOST .env | cut -d '=' -f2):$(shell grep DB_PORT .env | cut -d '=' -f2)/$(shell grep DB_NAME .env | cut -d '=' -f2)?sslmode=disable" -path db/migrations up
 
 migrate-down: ## Rollback last migration
 	@echo "⏮️  Rolling back migration..."
-	@migrate -database "mysql://$(shell grep DB_USERNAME .env | cut -d '=' -f2):$(shell grep DB_PASSWORD .env | cut -d '=' -f2)@tcp($(shell grep DB_HOST .env | cut -d '=' -f2):$(shell grep DB_PORT .env | cut -d '=' -f2))/$(shell grep DB_NAME .env | cut -d '=' -f2)?charset=utf8mb4&parseTime=True&loc=Local" -path db/migrations down 1
+	@migrate -database "postgres://$(shell grep DB_USERNAME .env | cut -d '=' -f2):$(shell grep DB_PASSWORD .env | cut -d '=' -f2)@$(shell grep DB_HOST .env | cut -d '=' -f2):$(shell grep DB_PORT .env | cut -d '=' -f2)/$(shell grep DB_NAME .env | cut -d '=' -f2)?sslmode=disable" -path db/migrations down 1
 
 migrate-create: ## Create new migration (usage: make migrate-create name=create_table_xyz)
 	@migrate create -ext sql -dir db/migrations -seq $(name)
 
 seed: ## Seed database with sample data
 	@echo "🌱 Seeding database..."
-	@mysql -u$(shell grep DB_USERNAME .env | cut -d '=' -f2) -p$(shell grep DB_PASSWORD .env | cut -d '=' -f2) $(shell grep DB_NAME .env | cut -d '=' -f2) < scripts/seed.sql
+	@PGPASSWORD=$(shell grep DB_PASSWORD .env | cut -d '=' -f2) psql -U $(shell grep DB_USERNAME .env | cut -d '=' -f2) -h $(shell grep DB_HOST .env | cut -d '=' -f2) -p $(shell grep DB_PORT .env | cut -d '=' -f2) -d $(shell grep DB_NAME .env | cut -d '=' -f2) -f scripts/seed.sql
 	@echo "✅ Database seeded"
 
 test: ## Run tests

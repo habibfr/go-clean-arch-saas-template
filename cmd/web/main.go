@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	"go-clean-arch-saas/internal/config"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	_ = godotenv.Load()
 	viperConfig := config.NewViper()
 	log := config.NewLogger(viperConfig)
 	db := config.NewDatabase(viperConfig, log)

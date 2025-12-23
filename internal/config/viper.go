@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/viper"
 )
@@ -21,13 +22,14 @@ func NewViper() *viper.Viper {
 	// Set default values
 	setDefaults(config)
 
-	// Try to load from .env file first (optional)
-	config.SetConfigName(".env")
-	config.SetConfigType("env")
+	// Cari .env di root project secara absolut
+	rootDir, _ := os.Getwd()
+	config.AddConfigPath(rootDir)
 	config.AddConfigPath(".")
 	config.AddConfigPath("./../")
+	config.SetConfigName(".env")
+	config.SetConfigType("env")
 
-	// AutomaticEnv allows environment variables to override config files
 	config.AutomaticEnv()
 
 	// Try reading .env file (ignore error if not exists)
@@ -81,7 +83,7 @@ func NewViper() *viper.Viper {
 // setDefaults sets default configuration values
 func setDefaults(config *viper.Viper) {
 	// App defaults
-	config.SetDefault("app.name", "go-clean-arch-saas")
+	config.SetDefault("app.name", "warefy-eam")
 	config.SetDefault("app.env", "development")
 
 	// Web defaults
@@ -94,10 +96,10 @@ func setDefaults(config *viper.Viper) {
 
 	// Database defaults
 	config.SetDefault("database.host", "localhost")
-	config.SetDefault("database.port", 3306)
-	config.SetDefault("database.username", "root")
+	config.SetDefault("database.port", 5432)
+	config.SetDefault("database.username", "postgres")
 	config.SetDefault("database.password", "")
-	config.SetDefault("database.name", "go_clean_arch_saas")
+	config.SetDefault("database.name", "")
 	config.SetDefault("database.pool.idle", 10)
 	config.SetDefault("database.pool.max", 100)
 	config.SetDefault("database.pool.lifetime", 300)

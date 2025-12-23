@@ -1,19 +1,20 @@
 CREATE TABLE audit_logs (
-    id CHAR(36) NOT NULL PRIMARY KEY,
-    user_id CHAR(36),
-    organization_id CHAR(36),
+    id UUID NOT NULL PRIMARY KEY,
+    user_id UUID,
+    organization_id UUID,
     action VARCHAR(100) NOT NULL,
     resource VARCHAR(100) NOT NULL,
-    resource_id CHAR(36),
+    resource_id UUID,
     details JSON,
     ip_address VARCHAR(45),
     user_agent TEXT,
     created_at BIGINT NOT NULL,
-    deleted_at BIGINT NULL DEFAULT NULL,
+    deleted_at BIGINT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
-    FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE SET NULL,
-    INDEX idx_audit_user (user_id),
-    INDEX idx_audit_org (organization_id),
-    INDEX idx_audit_created (created_at),
-    INDEX idx_audit_deleted (deleted_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE SET NULL
+);
+
+CREATE INDEX idx_audit_user ON audit_logs(user_id);
+CREATE INDEX idx_audit_org ON audit_logs(organization_id);
+CREATE INDEX idx_audit_created ON audit_logs(created_at);
+CREATE INDEX idx_audit_deleted ON audit_logs(deleted_at);
